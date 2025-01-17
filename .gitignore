@@ -1,0 +1,48 @@
+# Ignorar directorios de binarios y datos derivados
+Binaries/
+DerivedDataCache/
+Intermediate/
+Saved/
+
+# Ignorar archivos específicos del sistema operativo (ej. Windows y macOS)
+.DS_Store
+Thumbs.db
+
+# Archivos específicos de la configuración del proyecto (no son necesarios para otros colaboradores)
+*.suo
+*.user
+*.userprefs
+*.tmp
+
+# Archivos de configuración de Visual Studio
+.vs/
+.vscode/
+
+# Archivos temporales de Unreal Engine
+*.log
+*.vsconfig
+
+# Ignorar carpetas generadas por el motor
+*.xcodeproj
+*.xcworkspace
+
+# Ignorar los archivos de contenido generados por la compilación
+*.pdb
+*.obj
+*.lib
+*.a
+*.exe
+
+# Archivos específicos de plataformas
+*.dylib
+*.app
+*.ipa
+*.apk
+*.obb
+
+# Archivos de compilación de Unreal para Mac
+*.app/Contents/MacOS/
+RuralAustralia/
+ParagonKWang/
+ParagonGrux/
+StarterContent/
