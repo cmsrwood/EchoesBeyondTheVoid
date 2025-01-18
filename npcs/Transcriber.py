@@ -1,11 +1,8 @@
 import whisper
 import pyaudio
-import numpy as np
-import keyboard
-from time import sleep
 
 class Transcriber:
-    def __init__(self, model_size="small"):
+    def __init__(self, model_size="medium"):
         # Cargar el modelo de Whisper
         self.model = whisper.load_model(model_size)
         self.fs = 16000  # Frecuencia de muestreo
@@ -13,6 +10,6 @@ class Transcriber:
 
     def transcribe_audio(self, audio_data):
         print("Transcribiendo...")
-        result = self.model.transcribe(audio_data)
+        result = self.model.transcribe(audio_data, language="es")  # Set the language to Spanish
         print(f"Texto transcrito: {result['text']}")
         return result["text"]

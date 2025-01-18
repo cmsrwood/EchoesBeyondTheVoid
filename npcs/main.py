@@ -31,8 +31,8 @@ def process_request():
         npc_response = npc.respuesta(audio_text)
         
         return jsonify({
-            "transcription": audio_text,
             "npc_name": npc_name,
+            "transcription": audio_text,
             "npc_response": npc_response
         })
 
