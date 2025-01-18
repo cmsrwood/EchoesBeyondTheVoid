@@ -29,14 +29,20 @@ class NPCGenerator:
         return []
     
     def save_conversations(self):
+        # Cargar datos existentes si el archivo ya existe
         if os.path.exists(self.save_file):
-            with open(self.save_file, "r") as file:
+            with open(self.save_file, "r", encoding="utf-8") as file:
                 data = json.load(file)
         else:
             data = {}
+        
+        # Actualizar el historial del NPC actual
         data[self.npc_name] = self.conversation_history
-        with open(self.save_file, "w") as file:
-            json.dump(data, file, indent=4)
+        
+        # Guardar el historial actualizado en UTF-8 sin caracteres escapados
+        with open(self.save_file, "w", encoding="utf-8") as file:
+            json.dump(data, file, ensure_ascii=False, indent=4)
+
     
     def respuesta(self, prompt):
         # Agregar el mensaje del usuario al historial

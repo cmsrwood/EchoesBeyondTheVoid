@@ -12,57 +12,29 @@ transcriber = Transcriber()
 @app.route('/npc', methods=['POST'])
 def process_request():
     try:
-        content_type = request.headers.get('Content-Type')
+        # Ruta predefinida del archivo de audio
+        audio_file_path = os.path.join("../Saved/BouncedWavFiles/Record.wav")
         
-        # Si el cliente envía un archivo de audio (multipart/form-data)
-        if content_type and 'multipart/form-data' in content_type:
-            if 'audio' not in request.files:
-                return jsonify({"error": "No se encontró un archivo de audio."}), 400
-            
-            # Guardar el archivo temporalmente
-            audio_file = request.files['audio']
-            audio_path = os.path.join("temp_audio.wav")
-            audio_file.save(audio_path)
-            
-            # Transcribir el audio
-            audio_text = transcriber.transcribe_audio(audio_path)
-            os.remove(audio_path)  # Limpiar archivo temporal
-            
-            # Crear un NPC (opcional: nombre desde JSON si se incluye)
-            npc_name = request.form.get("name_npc", "NPC")
-            npc = NPCGenerator(npc_name)
-            
-            # Generar respuesta del NPC basado en la transcripción
-            npc_response = npc.respuesta(audio_text)
-            
-            return jsonify({
-                "transcription": audio_text,
-                "npc_name": npc_name,  # Nombre del NPC
-                "npc_response": npc_response  # Respuesta generada por el NPC
-            })
-
-
-        # Si el cliente envía datos JSON (application/json)
-        elif content_type and 'application/json' in content_type:
-            data = request.json
-            user_message = data.get("message", "")
-            
-            if not user_message:
-                return jsonify({"error": "El mensaje no puede estar vacío."}), 400
-            
-            # Crear un NPC (opcional: nombre desde JSON si se incluye)
-            npc_name = data.get("npc_name", "NPC")
-            npc = NPCGenerator(npc_name)
-            
-            # Generar respuesta del NPC
-            npc_response = npc.respuesta(user_message)
-            
-            return jsonify({
-                "text": npc_response
-            })
-
-        else:
-            return jsonify({"error": "Tipo de contenido no soportado. Usa 'application/json' o 'multipart/form-data'."}), 415
+        # Verificar si el archivo existe
+        if not os.path.exists(audio_file_path):
+            return jsonify({"error": f"El archivo de audio no se encontró en la ruta: {audio_file_path}"}), 404
+        
+        # Transcribir el audio
+        audio_text = transcriber.transcribe_audio(audio_file_path)
+        
+        # Obtener nombre del NPC desde el formulario o JSON
+        data = request.get_json() or {}
+        npc_name = data.get("npc_name", "NPC")
+        
+        # Crear un NPC y generar una respuesta
+        npc = NPCGenerator(npc_name)
+        npc_response = npc.respuesta(audio_text)
+        
+        return jsonify({
+            "transcription": audio_text,
+            "npc_name": npc_name,
+            "npc_response": npc_response
+        })
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
