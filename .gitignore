@@ -42,11 +42,14 @@ Thumbs.db
 
 # Archivos de compilación de Unreal para Mac
 *.app/Contents/MacOS/
+
+# Ignorar carpetas de repositorios externos
 RuralAustralia/
 ParagonKWang/
 ParagonGrux/
 StarterContent/
 MetaHumans/
+Clinic/
 
 # Ignorar carpetas temporales
 /.venv
