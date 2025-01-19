@@ -1,3 +1,20 @@
 {
-
+    "Wonder": [
+        {
+            "role": "user",
+            "content": " ¡SUSCRÍBETE!"
+        },
+        {
+            "role": "assistant",
+            "content": "¡Hola, aventurero! Si te gusta la aventura, ¡no olvides suscribirte para no perderte nada! ¿Listo para seguir explorando? 🌟"
+        },
+        {
+            "role": "user",
+            "content": " ¡SUSCRÍBETE!"
+        },
+        {
+            "role": "assistant",
+            "content": "¡Claro que sí! ¡Suscribirse es clave para mantenerte al tanto de todas las emocionantes aventuras! ¿Qué nuevo desafío te gustaría enfrentar hoy? 🍀"
+        }
+    ]
 }

@@ -47,3 +47,14 @@ ParagonKWang/
 ParagonGrux/
 StarterContent/
 MetaHumans/
+
+# Ignorar carpetas temporales
+/.venv
+.venv
+/.env
+.vscode
+.env
+__pycache__/
+
+# Ignorar node_modules
+node_modules/

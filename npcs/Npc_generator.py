@@ -6,9 +6,12 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-client = OpenAI(
-    api_key=os.getenv("OPENAI_API_KEY"),
-)
+# Verificación de la clave API
+api_key = os.getenv("OPENAI_API_KEY")
+if not api_key:
+    raise ValueError("API key de OpenAI no encontrada. Asegúrate de haber configurado el archivo .env correctamente.")
+
+client = OpenAI(api_key=api_key)
 
 fecha = datetime.now()
 
@@ -22,27 +25,31 @@ class NPCGenerator:
         self.conversation_history = self.load_conversations()
         
     def load_conversations(self):
-        if os.path.exists(self.save_file):
-            with open(self.save_file, "r", encoding="utf-8") as file:
-                data = json.load(file)
-            return data.get(self.npc_name, [])
-        return []
-    
-    def save_conversations(self):
-        # Cargar datos existentes si el archivo ya existe
-        if os.path.exists(self.save_file):
-            with open(self.save_file, "r", encoding="utf-8") as file:
-                data = json.load(file)
-        else:
-            data = {}
-        
-        # Actualizar el historial del NPC actual
-        data[self.npc_name] = self.conversation_history
-        
-        # Guardar el historial actualizado en UTF-8 sin caracteres escapados
-        with open(self.save_file, "w", encoding="utf-8") as file:
-            json.dump(data, file, ensure_ascii=False, indent=4)
+        try:
+            if os.path.exists(self.save_file):
+                with open(self.save_file, "r", encoding="utf-8") as file:
+                    data = json.load(file)
+                return data.get(self.npc_name, [])
+            return []
+        except (IOError, json.JSONDecodeError) as e:
+            print(f"Error al cargar las conversaciones: {e}")
+            return []
 
+    def save_conversations(self):
+        try:
+            if os.path.exists(self.save_file):
+                with open(self.save_file, "r", encoding="utf-8") as file:
+                    data = json.load(file)
+            else:
+                data = {}
+            
+            # Actualizar el historial del NPC actual
+            data[self.npc_name] = self.conversation_history
+            
+            with open(self.save_file, "w", encoding="utf-8") as file:
+                json.dump(data, file, ensure_ascii=False, indent=4)
+        except (IOError, json.JSONDecodeError) as e:
+            print(f"Error al guardar las conversaciones: {e}")
     
     def respuesta(self, prompt):
         # Agregar el mensaje del usuario al historial
@@ -81,18 +88,23 @@ class NPCGenerator:
         # Preparar los mensajes para el modelo
         messages = [system_message] + self.conversation_history
         
-        # Generar la respuesta
-        response = client.chat.completions.create(
-            messages=messages,
-            model=self.model,
-        )
+        try:
+            # Generar la respuesta
+            response = client.chat.completions.create(
+                messages=messages,
+                model=self.model,
+            )
+            
+            # Extraer y guardar la respuesta del NPC
+            npc_response = response.choices[0].message.content
+            self.conversation_history.append({"role": "assistant", "content": npc_response})
+            
+            # Guardar el historial actualizado
+            self.save_conversations()
+            
+            print(f"{self.npc_name}: {npc_response}")
+            return npc_response
         
-        # Extraer y guardar la respuesta del NPC
-        npc_response = response.choices[0].message.content
-        self.conversation_history.append({"role": "assistant", "content": npc_response})
-        
-        # Guardar el historial actualizado
-        self.save_conversations()
-        
-        print(f"{self.npc_name}: {npc_response}")
-        return npc_response
+        except Exception as e:
+            print(f"Error al generar la respuesta con la API de OpenAI: {e}")
+            return "Lo siento, hubo un problema al procesar tu solicitud."
