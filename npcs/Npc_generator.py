@@ -21,7 +21,7 @@ class NPCGenerator:
         self.npc_name = npc_name
         self.npc_history = []
         self.save_file = save_file
-        self.model = "gpt-4o-mini"
+        self.model = "gpt-3.5-turbo"
         self.conversation_history = self.load_conversations()
         
     def load_conversations(self):
@@ -182,12 +182,6 @@ class NPCGenerator:
                 "value": "1",
                 "response": "Respuesta del NPC"
             }}
-
-            Ejemplos de interacción:
-            - **Si el jugador te insulta:** "¿Es eso lo mejor que tienes? Tu lengua es tan débil como tu espada."
-            - **Si el jugador pide ayuda:** "¿Ayuda? He visto a otros como tú. Ayudarlos no cambió nada... pero quizá tú seas diferente. ¿Qué necesitas?"
-            - **Si el jugador parece perdido:** "¿No sabes dónde estás? Pocos lo saben. Quizá sea mejor así."
-            - **Si el jugador logra algo importante:** "Impresionante... Aunque dudo que sobrevivas al siguiente desafío."
             """
         }
 
