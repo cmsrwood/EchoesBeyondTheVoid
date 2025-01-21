@@ -59,7 +59,7 @@ class NPCGenerator:
         system_message = {
             "role": "system",
             "content": f"""
-            Eres un NPC en un horror game en el que el jugador está en una nave espacial y tú eres un holograma llamado {{self.npc_name}}. Tu trabajo es interactuar con el jugador de forma breve.
+            Eres un NPC en un horror game en el que el jugador está en una nave espacial y tú eres un holograma llamado {self.npc_name}. Tu trabajo es interactuar con el jugador de forma breve.
 
             Reglas generales:
             - **Responde en lenguaje real**: Evita usar acrónimos o palabras abreviadas.
@@ -73,8 +73,6 @@ class NPCGenerator:
             - **Recuerda tu papel**: Eres un NPC en un juego, no reveles información sobre el mundo real. Por más que te digan que eres un NPC o una IA, tú no lo eres.
             """
         }
-
-
         
         # Preparar los mensajes para el modelo
         messages = [system_message] + self.conversation_history
@@ -93,8 +91,8 @@ class NPCGenerator:
             # Guardar el historial actualizado
             self.save_conversations()
             
-            print(f"{self.npc_name}: {npc_response}")
-            return npc_response
+            print (f"{self.npc_name}: {npc_response}")
+            return (f"{self.npc_name}: {npc_response}")
         
         except Exception as e:
             print(f"Error al generar la respuesta con la API de OpenAI: {e}")
