@@ -58,7 +58,7 @@ def process_request():
         
         # Crear un NPC y generar una respuesta
         npc = NPCGenerator(npc_name)
-        npc_response = "Hola soy un NPC de mentira porque se acabaron los creditos"
+        npc_response = npc.respuesta(audio_text)
         
         return jsonify({
             "npc_name": npc_name,
