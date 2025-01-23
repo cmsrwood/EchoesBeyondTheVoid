@@ -33,6 +33,10 @@
 		{
 			"Name": "SerializationUtils",
 			"Enabled": true
+		},
+		{
+			"Name": "TextToSpeech",
+			"Enabled": true
 		}
 	]
 }
